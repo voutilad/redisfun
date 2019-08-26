@@ -1,5 +1,6 @@
 package com.sisu.redisfun;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,9 +57,11 @@ public class Taker implements Runnable {
 				speak("reading from group...");
 				Consumer<String> consumer = Consumer.from(GROUP, this.getName());
 				StreamOffset<String> offset = StreamOffset.lastConsumed(STREAM);
-				List<StreamMessage<String, String>> messages = commands.xreadgroup(
-					consumer, offset
-				);
+
+				// This next line generates type warnings due to the odd nature of the xreadgroup api
+				// and probably warrants a pull-request...hmm. See this post for some good details:
+				// https://medium.com/@BladeCoder/fixing-ugly-java-apis-read-only-generic-varargs-ee2d2e464ac1
+				List<StreamMessage<String, String>> messages = commands.xreadgroup(consumer, offset);
 
 				if (messages.size() == 0) {
 					speak("sleeping for 3s...");
@@ -67,18 +70,19 @@ public class Taker implements Runnable {
 					List<String> ids = messages.stream()
 					  .map(msg -> msg.getId())
 					  .collect(Collectors.toList());
-					speak("claiming " + ids.size() + "messages");
+					speak("claiming " + ids.size() + " messages");
 					List<StreamMessage<String, String>> claimed = commands.xclaim(STREAM, consumer, 0, ids.toArray(new String[ids.size()]));
 
 					if (claimed.size() > 0) {
 						speak("claimed " + claimed.size() + " messages");
 
-						List<String> acked = claimed.stream().map(msg -> {
+						List<String> claimed_ids = claimed.stream().map(msg -> {
 							speak("processing " + msg);
 							return msg.getId();
 						  }).collect(Collectors.toList());
 
-						speak("processed " + acked + " messages!");
+						long acked = commands.xack(STREAM, GROUP, claimed_ids.toArray(new String[claimed_ids.size()]));
+						speak("processed " + acked + " messages (" + claimed_ids + ")");
 					}
 				}
 			} catch (Exception e) {
