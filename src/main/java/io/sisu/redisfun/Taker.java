@@ -1,4 +1,4 @@
-package com.sisu.redisfun;
+package io.sisu.redisfun;
 
 import java.util.List;
 import java.util.Random;

@@ -1,4 +1,4 @@
-package com.sisu.redisfun;
+package io.sisu.redisfun;
 
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.async.RedisStreamAsyncCommands;

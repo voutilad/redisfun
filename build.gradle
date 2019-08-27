@@ -7,7 +7,7 @@ plugins {
     id 'application'
 }
 
-group 'com.sisu'
+group 'io.sisu'
 version '0.1.0-SNAPSHOT'
 
 repositories {
@@ -21,7 +21,7 @@ dependencies {
 }
 
 application {
-    mainClassName = 'com.sisu.redisfun.App'
+    mainClassName = 'io.sisu.redisfun.App'
 }
 
 tasks.withType(JavaCompile) {
@@ -30,11 +30,11 @@ tasks.withType(JavaCompile) {
 }
 
 task ticker(type: JavaExec) {
-    main 'com.sisu.redisfun.Ticker'
+    main 'io.sisu.redisfun.Ticker'
     classpath sourceSets.main.runtimeClasspath
 }
 
 task taker(type: JavaExec) {
-    main 'com.sisu.redisfun.Taker'
+    main 'io.sisu.redisfun.Taker'
     classpath sourceSets.main.runtimeClasspath
 }

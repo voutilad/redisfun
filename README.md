@@ -32,7 +32,7 @@ Simply execute the Gradle wrapper with the `run` task:
 ```bash
 $ ./gradlew run
 ```
->> Use `gradlew.bat` on Windows
+> Use `gradlew.bat` on Windows
 
 You can run the producer ("ticker") or consumer ("taker") individually
 using gradle as well:
@@ -57,14 +57,14 @@ $ ./java -jar ./build/libs/redisfun-0.1.0-SNAPSHOT-all.jar
 ```
 
 The exposed entrypoints:
-* main App: `com.sisu.redisfun.App`
-* producer: `com.sisu.redisfun.Ticker`
-* consumer: `com.sisu.redisfun.Taker`
+* main App: `io.sisu.redisfun.App`
+* producer: `io.sisu.redisfun.Ticker`
+* consumer: `io.sisu.redisfun.Taker`
 
 Which you can easily run via:
 ```bash
 $ ./java -cp ./build/libs/redisfun-0.1.0-SNAPSHOT-all.jar \
-  com.sisu.redisfun.Ticker
+  io.sisu.redisfun.Ticker
 ```
 
 # Todo's
