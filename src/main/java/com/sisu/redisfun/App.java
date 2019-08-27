@@ -9,17 +9,17 @@ public class App {
         System.out.println("Starting redisfun...");
 		RedisClient client = RedisClient.create("redis://localhost");
 
-		Thread ticker_thread = new Thread(new Ticker(client));
-		Thread taker_thread = new Thread(new Taker(client));
+		Thread ticker1 = new Thread(new Ticker(client));
+		Thread taker1 = new Thread(new Taker(client));
+		Thread taker2 = new Thread(new Taker(client));
+
 		try {
-			ticker_thread.start();
-			Thread.sleep(3000);
-			taker_thread.start();
+			ticker1.start();
+			taker1.start();
+			taker2.start();
 
-
-			ticker_thread.join();
-			taker_thread.join();
-		} catch (InterruptedException e) {
+			ticker1.join();
+		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 		System.out.println("We're done here!");

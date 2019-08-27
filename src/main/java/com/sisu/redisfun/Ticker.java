@@ -35,7 +35,7 @@ public class Ticker implements Runnable {
 				speak("ticking " + msg);
 
 				commands.xadd("MYSTREAM", "msg", msg);
-				Thread.sleep(1400);
+				Thread.sleep(350);
 			} catch (InterruptedException e) {
 				this.timeToDie = true;
 				break;
