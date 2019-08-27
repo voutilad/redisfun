@@ -9,9 +9,8 @@ client funded by [Pivotal](https://pivotal.io) and providing three
 ways of interacting with the Redis API:
 
 1. Synchronous calls that block
-2. Asynchronous calls that returns Java [Futures]
-3. [Reactive Streams] from the [Reactor] project (also from Pivotal)
-
+2. Asynchronous calls that returns Java Futures[1]
+3. Reactive Streams[2] from the Reactor[3] project (also from Pivotal)
 
 
 ## Pre-reqs
@@ -34,6 +33,13 @@ Simply execute the Gradle wrapper with the `run` task:
 $ ./gradlew run
 ```
 >> Use `gradlew.bat` on Windows
+
+You can run the producer ("ticker") or consumer ("taker") individually
+using gradle as well:
+
+```bash
+$./gradlew ticker
+```
 
 ### Building a standalone Jar
 I've included a Gradle task for bundling up the project into an
@@ -65,9 +71,12 @@ $ ./java -cp ./build/libs/redisfun-0.1.0-SNAPSHOT-all.jar \
 Explore the following:
   * stand-alone consumers that use reactor-style consumption models
   * more complicated POJO storage...can I stick POJOs in the stream?
+  * compare with how this stream-based messaging approach would differ
+    from a "brokerless" model like from [zeromq](https://zeromq.org)
 
-# Links
+# Footnotes
+(These never render well in Github.)
 
-[Futures](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Future.html)
-[Reactive Streams](http://www.reactive-streams.org/)
-[Reactor](https://projectreactor.io/)
+[1](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Future.html)
+[2](http://www.reactive-streams.org/)
+[3](https://projectreactor.io/)
