@@ -79,20 +79,23 @@ public class Taker implements Runnable {
 				// https://medium.com/@BladeCoder/fixing-ugly-java-apis-read-only-generic-varargs-ee2d2e464ac1
 				List<StreamMessage<String, String>> messages = redis.xreadgroup(consumer, XReadArgs.Builder.count(3).block(5000), offset);
 
-				List<String> ids = messages.stream().map(msg -> msg.getId()).collect(Collectors.toList());
-				speak("claiming " + ids.size() + " messages");
-				List<StreamMessage<String, String>> claimed = redis.xclaim(STREAM, consumer, 0,
-						ids.toArray(new String[ids.size()]));
+				if (messages.size() > 0) {
+					List<String> ids = messages.stream().map(msg -> msg.getId()).collect(Collectors.toList());
+					speak("claiming " + ids.size() + " messages");
+					List<StreamMessage<String, String>> claimed = redis.xclaim(STREAM, consumer, 0,
+							ids.toArray(new String[ids.size()]));
 
-				if (claimed.size() > 0) {
-					speak("claimed " + claimed.size() + " messages");
+					if (claimed.size() > 0) {
+						speak("claimed " + claimed.size() + " messages");
 
-					List<String> claimed_ids = claimed.stream()
-					  .map(msg -> process(msg))
-					  .collect(Collectors.toList());
+						List<String> claimed_ids = claimed.stream().map(msg -> process(msg))
+								.collect(Collectors.toList());
 
-					long acked = redis.xack(STREAM, GROUP, claimed_ids.toArray(new String[claimed_ids.size()]));
-					speak("processed " + acked + " messages (" + claimed_ids + ")");
+						long acked = redis.xack(STREAM, GROUP, claimed_ids.toArray(new String[claimed_ids.size()]));
+						speak("processed " + acked + " messages (" + claimed_ids + ")");
+					}
+				} else {
+					speak("couldn't claim any messages in past 5s");
 				}
 			} catch (Exception e) {
 				speak(e.getMessage());
